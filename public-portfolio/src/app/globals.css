@@ -1,26 +1,151 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Light Theme - Modern warm aesthetic */
+  --bg-gradient-start: #fdfbfb;
+  --bg-gradient-end: #ebedee;
+  --foreground: #1c1c22;
+  --card-bg: rgba(255, 255, 255, 0.75);
+  --card-border: rgba(255, 255, 255, 0.5);
+  --accent-color: #6366f1; /* Indigo */
+  --accent-hover: #4f46e5;
+  --text-muted: #64748b;
+  --blob-1: rgba(99, 102, 241, 0.15); /* Soft Indigo */
+  --blob-2: rgba(236, 72, 153, 0.15); /* Soft Pink */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Dark Theme - Deep cyber aesthetic */
+    --bg-gradient-start: #0f172a;
+    --bg-gradient-end: #020617;
+    --foreground: #f8fafc;
+    --card-bg: rgba(30, 41, 59, 0.4);
+    --card-border: rgba(255, 255, 255, 0.1);
+    --accent-color: #818cf8;
+    --accent-hover: #6366f1;
+    --text-muted: #94a3b8;
+    --blob-1: rgba(99, 102, 241, 0.2);
+    --blob-2: rgba(236, 72, 153, 0.2);
   }
 }
 
+@theme inline {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+}
+
 body {
-  background: var(--background);
+  background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+  background-attachment: fixed;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Background Animated Blobs */
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(120px);
+  z-index: -1;
+  animation: float 15s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+body::before {
+  top: -10%;
+  left: -10%;
+  width: 50vw;
+  height: 50vw;
+  background-color: var(--blob-1);
+}
+
+body::after {
+  bottom: -10%;
+  right: -10%;
+  width: 40vw;
+  height: 40vw;
+  background-color: var(--blob-2);
+  animation-delay: -7s;
+}
+
+@keyframes float {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(10%, 15%) scale(1.1); }
+}
+
+/* 
+  Overriding the hardcoded Tailwind colors used in the layout 
+  so they adapt to our glassmorphism theme seamlessly 
+*/
+
+/* Cards, Headers, and Backgrounds */
+.bg-white {
+  background-color: var(--card-bg) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--card-border) !important;
+}
+
+/* Typography */
+.text-gray-900, .text-black {
+  color: var(--foreground) !important;
+}
+
+.text-gray-600, .text-gray-500 {
+  color: var(--text-muted) !important;
+}
+
+/* Accents & Buttons */
+.bg-black {
+  background-color: var(--accent-color) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px 0 var(--blob-1) !important;
+  border: none !important;
+  transition: all 0.3s ease !important;
+}
+
+.hover\:bg-gray-800:hover {
+  background-color: var(--accent-hover) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4) !important;
+}
+
+.hover\:text-black:hover {
+  color: var(--accent-color) !important;
+}
+
+/* Borders and lines */
+.border-b, .border-t, .border-gray-200, .border-gray-100 {
+  border-color: var(--card-border) !important;
+}
+
+.bg-gray-100 {
+  background-color: rgba(0, 0, 0, 0.03) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  .bg-gray-100 {
+    background-color: rgba(255, 255, 255, 0.03) !important;
+  }
+}
+
+/* Images & Inputs */
+img.border-white {
+  border-color: var(--card-border) !important;
+}
+
+/* Additional enhancements for a polished feel */
+a {
+  transition: all 0.2s ease-in-out;
+}
+
+hr {
+  border-color: var(--card-border) !important;
 }
